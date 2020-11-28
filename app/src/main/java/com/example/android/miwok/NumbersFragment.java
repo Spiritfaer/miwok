@@ -20,9 +20,8 @@ import java.util.ArrayList;
  */
 public class NumbersFragment extends Fragment {
 
-    //Start of NumberActivity section
     private MediaPlayer mPlayer;
-    private AudioManager audioManager;
+    private AudioManager mAudioManager;
     private AudioManager.OnAudioFocusChangeListener afChangeListener;
 
     private final ArrayList<Word> words;
@@ -41,8 +40,39 @@ public class NumbersFragment extends Fragment {
         Log.v("NumberActivity", "init words in ArrayList");
     }
 
+    public NumbersFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.word_list, container, false);
+
+        initAdapter(rootView);
+        initItemListenerForPlayer(rootView);
+        initAudioManager();
+
+        return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // When the activity is stopped, release the media player resources because we won't
+        // be playing any more sounds.
+        releaseMediaPlayer();
+    }
+
     private void initAudioManager() {
-        audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
         afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
             @Override
             public void onAudioFocusChange(int focusChange) {
@@ -65,7 +95,7 @@ public class NumbersFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 releaseMediaPlayer();
-                int requestResult = audioManager.requestAudioFocus(afChangeListener,
+                int requestResult = mAudioManager.requestAudioFocus(afChangeListener,
                         AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
                 if (requestResult == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                     mPlayer = MediaPlayer.create(getActivity(), words.get(position).getAudio());
@@ -89,8 +119,8 @@ public class NumbersFragment extends Fragment {
     }
 
     private void releaseMediaPlayer() {
-        if (audioManager != null && afChangeListener != null) {
-            audioManager.abandonAudioFocus(afChangeListener);
+        if (mAudioManager != null && afChangeListener != null) {
+            mAudioManager.abandonAudioFocus(afChangeListener);
         }
         if (mPlayer != null) {
             if (mPlayer.isPlaying()) {
@@ -99,38 +129,5 @@ public class NumbersFragment extends Fragment {
             mPlayer.release();
         }
         mPlayer = null;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // When the activity is stopped, release the media player resources because we won't
-        // be playing any more sounds.
-        releaseMediaPlayer();
-    }
-
-//End of NumberActivity section
-
-    public NumbersFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.word_list, container, false);
-
-        initAdapter(rootView);
-        initItemListenerForPlayer(rootView);
-        initAudioManager();
-
-        return rootView;
     }
 }
