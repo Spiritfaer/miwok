@@ -18,29 +18,26 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class NumbersFragment extends Fragment {
-
+public class ColorsFragment extends Fragment {
     private MediaPlayer mPlayer;
-    private AudioManager mAudioManager;
+    private AudioManager audioManager;
     private AudioManager.OnAudioFocusChangeListener afChangeListener;
 
     private final ArrayList<Word> words;
     {
         words = new ArrayList<>();
-        words.add(new Word("one", "lutti", R.drawable.number_one, R.raw.number_one));
-        words.add(new Word("two", "otiiko", R.drawable.number_two, R.raw.number_two));
-        words.add(new Word("three", "tolookosu", R.drawable.number_three, R.raw.number_three));
-        words.add(new Word("four", "oyyisa", R.drawable.number_four, R.raw.number_four));
-        words.add(new Word("five", "massokka", R.drawable.number_five, R.raw.number_five));
-        words.add(new Word("six", "temmokka", R.drawable.number_six, R.raw.number_six));
-        words.add(new Word("seven", "kenekaku", R.drawable.number_seven, R.raw.number_seven));
-        words.add(new Word("eight", "kawinta", R.drawable.number_eight, R.raw.number_eight));
-        words.add(new Word("nine", "wo'e", R.drawable.number_nine, R.raw.number_nine));
-        words.add(new Word("ten", "na'aacha", R.drawable.number_ten, R.raw.number_ten));
-        Log.v("NumberActivity", "init words in ArrayList");
+        words.add(new Word("red", "weṭeṭṭi", R.drawable.color_red, R.raw.color_red));
+        words.add(new Word("green", "chokokki", R.drawable.color_green, R.raw.color_green));
+        words.add(new Word("brown", "ṭakaakki", R.drawable.color_brown, R.raw.color_brown));
+        words.add(new Word("gray", "ṭopoppi", R.drawable.color_gray, R.raw.color_gray));
+        words.add(new Word("black", "kululli", R.drawable.color_black, R.raw.color_black));
+        words.add(new Word("white", "kelelli", R.drawable.color_white, R.raw.color_white));
+        words.add(new Word("dusty yellow", "ṭopiisә", R.drawable.color_dusty_yellow, R.raw.color_dusty_yellow));
+        words.add(new Word("mustard yellow", "chiwiiṭә", R.drawable.color_mustard_yellow, R.raw.color_mustard_yellow));
+        Log.v("NumberActivity", "Static init words in ArrayList");
     }
 
-    public NumbersFragment() {
+    public ColorsFragment() {
         // Required empty public constructor
     }
 
@@ -65,7 +62,6 @@ public class NumbersFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-
         // When the activity is stopped, release the media player resources because we won't
         // be playing any more sounds.
         releaseMediaPlayer();
@@ -73,26 +69,8 @@ public class NumbersFragment extends Fragment {
 
     private void initAdapter(View rootView) {
         ListView listView = (ListView) rootView.findViewById(R.id.list);
-        WordsAdapter itemsAdapter = new WordsAdapter(getActivity(), R.layout.list_item, words, R.color.category_numbers);
+        WordsAdapter itemsAdapter = new WordsAdapter(getActivity(), R.layout.list_item, words, R.color.category_colors);
         listView.setAdapter(itemsAdapter);
-    }
-
-    private void initAudioManager() {
-        mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
-        afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
-            @Override
-            public void onAudioFocusChange(int focusChange) {
-                if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK ||
-                        focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
-                    mPlayer.pause();
-                    mPlayer.seekTo(0);
-                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-                    releaseMediaPlayer();
-                } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-                    mPlayer.start();
-                }
-            }
-        };
     }
 
     private void initItemListenerForPlayer(View rootView) {
@@ -101,7 +79,7 @@ public class NumbersFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 releaseMediaPlayer();
-                int requestResult = mAudioManager.requestAudioFocus(afChangeListener,
+                int requestResult = audioManager.requestAudioFocus(afChangeListener,
                         AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
                 if (requestResult == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                     mPlayer = MediaPlayer.create(getActivity(), words.get(position).getAudio());
@@ -119,8 +97,8 @@ public class NumbersFragment extends Fragment {
     }
 
     private void releaseMediaPlayer() {
-        if (mAudioManager != null && afChangeListener != null) {
-            mAudioManager.abandonAudioFocus(afChangeListener);
+        if (audioManager != null && afChangeListener != null) {
+            audioManager.abandonAudioFocus(afChangeListener);
         }
         if (mPlayer != null) {
             if (mPlayer.isPlaying()) {
@@ -129,5 +107,23 @@ public class NumbersFragment extends Fragment {
             mPlayer.release();
         }
         mPlayer = null;
+    }
+
+    private void initAudioManager() {
+        audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+            @Override
+            public void onAudioFocusChange(int focusChange) {
+                if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK ||
+                        focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
+                    mPlayer.pause();
+                    mPlayer.seekTo(0);
+                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                    releaseMediaPlayer();
+                } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                    mPlayer.start();
+                }
+            }
+        };
     }
 }
