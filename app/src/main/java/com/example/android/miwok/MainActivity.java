@@ -17,6 +17,7 @@ package com.example.android.miwok;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
+    private final String[] categoriesTab = new String[] {"Number", "Family", "Colors", "Phrases"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
         ViewPager view = (ViewPager) findViewById(R.id.viewpager);
 
-        CategoriesFragmentPagerAdapter adapter = new CategoriesFragmentPagerAdapter(getSupportFragmentManager());
+        CategoriesFragmentPagerAdapter adapter = new CategoriesFragmentPagerAdapter(getSupportFragmentManager(), categoriesTab);
 
         view.setAdapter(adapter);
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(view);
     }
 
     private void initListenerU(int idCategory, final Class<?> activity) {

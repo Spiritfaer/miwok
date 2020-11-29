@@ -4,11 +4,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
+import android.view.View;
 
 public class CategoriesFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    public CategoriesFragmentPagerAdapter(FragmentManager fm) {
+    private final String[] tabTitles;
+
+    public CategoriesFragmentPagerAdapter(FragmentManager fm, String[] tabTitles) {
         super(fm);
+        this.tabTitles = tabTitles;
     }
 
     @Override
@@ -31,5 +35,11 @@ public class CategoriesFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return 4;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        // Generate title based on item position
+        return tabTitles[position].toUpperCase();
     }
 }
