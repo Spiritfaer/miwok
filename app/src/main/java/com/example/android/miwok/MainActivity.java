@@ -29,18 +29,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        // Start old section -------
-        // Set the content of the activity to use the activity_main.xml layout file
-//        setContentView(R.layout.activity_main);
-//
-//        initListenerU(R.id.numbers, NumbersActivity.class);
-//        initListenerU(R.id.colors, ColorsActivity.class);
-//        initListenerU(R.id.phrases, PhrasesActivity.class);
-//        initListenerU(R.id.family, FamilyActivity.class);
-        // End old section -------
-
         setContentView(R.layout.activity_main_list);
 
         ViewPager view = (ViewPager) findViewById(R.id.viewpager);
