@@ -17,6 +17,7 @@ package com.example.android.miwok;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,13 +30,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set the content of the activity to use the activity_main.xml layout file
-        setContentView(R.layout.activity_main);
 
-        initListenerU(R.id.numbers, NumbersActivity.class);
-        initListenerU(R.id.colors, ColorsActivity.class);
-        initListenerU(R.id.phrases, PhrasesActivity.class);
-        initListenerU(R.id.family, FamilyActivity.class);
+        // Start old section -------
+        // Set the content of the activity to use the activity_main.xml layout file
+//        setContentView(R.layout.activity_main);
+//
+//        initListenerU(R.id.numbers, NumbersActivity.class);
+//        initListenerU(R.id.colors, ColorsActivity.class);
+//        initListenerU(R.id.phrases, PhrasesActivity.class);
+//        initListenerU(R.id.family, FamilyActivity.class);
+        // End old section -------
+
+        setContentView(R.layout.activity_main_list);
+
+        ViewPager view = (ViewPager) findViewById(R.id.viewpager);
+
+        CategoriesFragmentPagerAdapter adapter = new CategoriesFragmentPagerAdapter(getSupportFragmentManager());
+
+        view.setAdapter(adapter);
     }
 
     private void initListenerU(int idCategory, final Class<?> activity) {
