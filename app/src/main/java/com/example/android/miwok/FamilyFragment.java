@@ -71,7 +71,7 @@ public class FamilyFragment extends Fragment {
 
     public void initAdapter(View rootVew) {
         ListView listView = (ListView) rootVew.findViewById(R.id.list);
-        WordsAdapter itemsAdapter = new WordsAdapter(getActivity(), R.layout.list_item, words, R.color.category_family);
+        WordsAdapter itemsAdapter = new WordsAdapter(getActivity(), R.layout.word_item, words, R.color.category_family);
         listView.setAdapter(itemsAdapter);
     }
 

@@ -3,12 +3,10 @@ package com.example.android.miwok;
 import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,7 +31,7 @@ public class WordsAdapter extends ArrayAdapter<Word> {
         Word word = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.word_item, parent, false);
         }
 
         LinearLayout rootView = (LinearLayout) convertView.findViewById(R.id.text_holder);
